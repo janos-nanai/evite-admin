@@ -1,20 +1,22 @@
 import { Accordion, Container, Col, Row } from "react-bootstrap";
 import { PersonFill } from "react-bootstrap-icons";
 
-type GuestData = {
-  id: string;
-  name: { firstName: string; lastName: string; nickName?: string };
-  contact: { email?: string; phone?: string };
-  isComing: boolean;
-  didReply: boolean;
-  accompaniedBy:
-    | {
-        name: { firstName: string; lastName: string; nickName?: string };
-        isChild: boolean;
-        age: number | null;
-      }[]
-    | [];
-};
+import { GuestData } from "../../types/guest-types";
+
+// type GuestData = {
+//   id: string;
+//   name: { firstName: string; lastName: string; nickName?: string };
+//   contact: { email?: string; phone?: string };
+//   isComing: boolean;
+//   didReply: boolean;
+//   accompaniedBy:
+//     | {
+//         name: { firstName: string; lastName: string; nickName?: string };
+//         isChild: boolean;
+//         age: number | null;
+//       }[]
+//     | [];
+// };
 
 const Guest = (props: GuestData) => {
   return (

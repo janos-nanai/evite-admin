@@ -1,16 +1,3 @@
-// type GuestData = {
-//   id: string;
-//   name: { firstName: string; lastName: string; nickName?: string };
-//   contact: { email?: string; phone?: string };
-//   isComing?: boolean;
-//   didReply: boolean;
-//   accompaniedBy: {
-//     name: { firstName: string; lastName: string; nickName?: string };
-//     isChild: boolean;
-//     age?: number;
-//   }[] | [];
-// };
-
 export const DUMMY_GUESTLIST = [
   {
     id: "1",
@@ -18,7 +5,8 @@ export const DUMMY_GUESTLIST = [
     contact: { email: "bedi@gmail.com", phone: "+361234567" },
     isComing: true,
     didReply: true,
-    accompaniedBy: [],
+    specialDietRequirements: ["húst hússal", "antivegán"],
+    children: [],
   },
   {
     id: "2",
@@ -26,31 +14,33 @@ export const DUMMY_GUESTLIST = [
     contact: { email: "zizz@hotmail.com", phone: "+361234567" },
     isComing: true,
     didReply: true,
-    accompaniedBy: [
-      {
-        name: { firstName: "Zaza", lastName: "Laza", nickName: "Zizférj" },
-        isChild: false,
-        age: null,
-      },
+    specialDietRequirements: [],
+    partner: 
+    {
+      name: { firstName: "Zaza", lastName: "Laza", nickName: "Zizférj" },
+      specialDietRequirements: [],
+    },
+    children: [
       {
         name: { firstName: "gyerkőc-1", lastName: "Laza", nickName: "Zizférj" },
-        isChild: true,
         age: 5,
+        specialDietRequirements: [],
       },
       {
         name: { firstName: "gyerkőc-2", lastName: "Laza", nickName: "Zizférj" },
-        isChild: true,
         age: 3,
+        specialDietRequirements: [],
       },
     ],
   },
   {
     id: "3",
     name: { firstName: "Erik", lastName: "Viking", nickName: "Verick" },
-    contact: { email: "erikaviking@citrmail.hu", phone: "" },
+    contact: { email: "erikaviking@citromail.hu", phone: "" },
     isComing: false,
     didReply: true,
-    accompaniedBy: [],
+    specialDietRequirements: [],
+    children: [],
   },
   {
     id: "4",
@@ -58,6 +48,7 @@ export const DUMMY_GUESTLIST = [
     contact: { email: "", phone: "" },
     isComing: false,
     didReply: false,
-    accompaniedBy: [],
+    specialDietRequirements: [],
+    children: [],
   },
 ];
