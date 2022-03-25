@@ -5,7 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 const MainNavigation = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
-      <Container>
+      <Container fluid>
         <Navbar.Brand href="#home">evite-admin</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

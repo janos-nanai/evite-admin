@@ -11,26 +11,34 @@ const GuestList = () => {
       <Accordion.Body>
         {DUMMY_GUESTLIST.map((guest) => {
           const {
-            id,
-            name,
-            contact,
+            voucherId,
+            firstName,
+            lastName,
+            email,
+            phone,
             isComing,
             didReply,
             specialDietRequirements,
             partner,
             children,
+            createdDate,
+            modifiedDate,
           } = guest;
           return (
             <Guest
-              key={id}
-              id={id}
-              name={name}
-              contact={contact}
+              key={voucherId}
+              voucherId={voucherId}
+              firstName={firstName}
+              lastName={lastName}
+              email={email}
+              phone={phone}
               isComing={isComing}
               didReply={didReply}
               specialDietRequirements={specialDietRequirements}
               partner={partner}
               children={children}
+              createdDate={createdDate}
+              modifiedDate={modifiedDate}
             />
           );
         })}

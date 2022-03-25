@@ -1,32 +1,33 @@
-export interface NameData {
+export interface PartnerData {
+  _id?: string;
   firstName: string;
   lastName: string;
-  nickName: string | undefined;
-}
-
-export interface contactData {
-  email: string | undefined;
-  phone: string | undefined;
-}
-
-export interface partnerData {
-  name: NameData;
+  nickName: string | null;
   specialDietRequirements: string[] | [];
 }
 
-export interface childData {
-  name: NameData;
+export interface ChildData {
+  _id?: string;
+  firstName: string;
+  lastName: string;
+  nickName: string | null;
   age: number;
   specialDietRequirements: string[] | [];
 }
 
 export interface GuestData {
-  id: string;
-  name: NameData;
-  contact: contactData;
+  _id?: string;
+  voucherId: string;
+  firstName: string;
+  lastName: string;
+  nickName?: string;
+  email: string | null;
+  phone: string | null;
   isComing: boolean;
   didReply: boolean;
   specialDietRequirements: string[] | [];
-  partner: partnerData | undefined;
-  children: childData[] | [];
+  partner: PartnerData | null;
+  children: ChildData[] | [];
+  createdDate: Date;
+  modifiedDate: Date;
 }
