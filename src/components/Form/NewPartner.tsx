@@ -1,29 +1,14 @@
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import BasicFormCard from "./BasicFormCard";
 import BasicFormInput from "./BasicFormInput";
 
-const NewGuest = () => {
+const NewPartner = () => {
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
-
-    const url = "http://localhost:8888/api/admin";
-    const data = {
-      firstName: firstNameInput,
-      lastName: lastNameInput,
-      nickName: nickNameInput || null,
-    };
-
-    fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      console.log(res);
-    });
   };
 
   const firstNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -65,4 +50,4 @@ const NewGuest = () => {
   );
 };
 
-export default NewGuest;
+export default NewPartner;

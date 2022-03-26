@@ -1,30 +1,16 @@
 import { GuestData } from "../../types/guest-types";
 
-import { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 
 import Guest from "./Guest";
 
-const GuestList = () => {
-  const [loadedGuests, setLoadedGuests] = useState<GuestData[] | []>([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8888/api/admin")
-      .then((res) => {
-        if (res) {
-          return res.json();
-        }
-      })
-      .then((data) => {
-        console.log(data);
-      });
-  }, []);
+const GuestList = (props: {guests: GuestData[]}) => {
 
   return (
     <Accordion.Item eventKey="0">
       <Accordion.Header>Guests</Accordion.Header>
       <Accordion.Body>
-        {loadedGuests.map((guest) => {
+        {props.guests.map((guest) => {
           const {
             voucherId,
             firstName,
