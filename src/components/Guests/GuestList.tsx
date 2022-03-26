@@ -1,15 +1,30 @@
+import { GuestData } from "../../types/guest-types";
+
+import { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 
 import Guest from "./Guest";
 
-import { DUMMY_GUESTLIST } from "../../assets/dummy-guestlist";
-
 const GuestList = () => {
+  const [loadedGuests, setLoadedGuests] = useState<GuestData[] | []>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8888/api/admin")
+      .then((res) => {
+        if (res) {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  }, []);
+
   return (
     <Accordion.Item eventKey="0">
       <Accordion.Header>Guests</Accordion.Header>
       <Accordion.Body>
-        {DUMMY_GUESTLIST.map((guest) => {
+        {loadedGuests.map((guest) => {
           const {
             voucherId,
             firstName,
