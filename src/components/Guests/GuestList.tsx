@@ -29,7 +29,7 @@ const GuestList = () => {
             phone,
             isComing,
             didReply,
-            specialDietRequirements,
+            specialDiet,
             partner,
             children,
             createdDate,
@@ -46,7 +46,7 @@ const GuestList = () => {
               phone={phone}
               isComing={isComing}
               didReply={didReply}
-              specialDietRequirements={specialDietRequirements}
+              specialDiet={specialDiet}
               partner={partner}
               children={children}
               createdDate={createdDate}

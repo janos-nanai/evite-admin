@@ -3,7 +3,7 @@ export interface PartnerData {
   firstName: string;
   lastName: string;
   nickName: string | null;
-  specialDietRequirements: string[] | [];
+  specialDiet: string[] | [];
 }
 
 export interface ChildData {
@@ -12,7 +12,7 @@ export interface ChildData {
   lastName: string;
   nickName: string | null;
   age: number;
-  specialDietRequirements: string[] | [];
+  specialDiet: string[] | [];
 }
 
 export interface GuestData {
@@ -25,7 +25,7 @@ export interface GuestData {
   phone: string | null;
   isComing: boolean;
   didReply: boolean;
-  specialDietRequirements: string[] | [];
+  specialDiet: string[] | [];
   partner: PartnerData | null;
   children: ChildData[] | [];
   createdDate: Date;

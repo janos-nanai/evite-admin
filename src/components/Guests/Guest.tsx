@@ -7,26 +7,53 @@ import GuestBadge from "../Badges/GuestBadge";
 import StatusBadge from "../Badges/StatusBadge";
 
 const Guest = (props: GuestData) => {
+  const {
+    voucherId,
+    firstName,
+    lastName,
+    nickName,
+    email,
+    phone,
+    isComing,
+    didReply,
+    specialDiet,
+    partner,
+    children,
+    createdDate,
+    modifiedDate,
+  } = props;
   return (
     <Accordion>
       <Accordion.Item eventKey="0">
         <Accordion.Header>
           <Container>
             <Row>
+              <Col>{`${lastName}, ${firstName}`} </Col>{" "}
+            </Row>
+            <Row>
               <Col>
-                {`${props.lastName}, ${props.firstName}`}{" "}
-                <StatusBadge
-                  isComing={props.isComing}
-                  didReply={props.didReply}
-                />{" "}
-                <GuestBadge partner={!!props.partner} />
+                <StatusBadge isComing={isComing} didReply={didReply} />{" "}
+                {isComing && didReply && <GuestBadge partner={!!partner} />}
               </Col>
             </Row>
-            <Row>{props.nickName}</Row>
           </Container>
         </Accordion.Header>
         <Accordion.Body>
-          <GuestDetails />
+          <GuestDetails
+            voucherId={voucherId}
+            firstName={firstName}
+            lastName={lastName}
+            nickName={nickName}
+            email={email}
+            phone={phone}
+            isComing={isComing}
+            didReply={didReply}
+            specialDiet={specialDiet}
+            partner={partner}
+            children={children}
+            createdDate={createdDate}
+            modifiedDate={modifiedDate}
+          />
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
