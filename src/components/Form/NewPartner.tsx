@@ -9,6 +9,26 @@ const NewPartner = () => {
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
+
+    const guestId = "tbd";
+    const url = `http://localhost:8888/api/admin${guestId}/partner`;
+    const data = {
+      firstName: firstNameInput,
+      lastName: lastNameInput,
+      nickName: nickNameInput || null,
+    };
+
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      console.log(res);
+    });
+
+    setFirstNameInput("");
+    setLastNameInput("");
+    setNickNameInput("");
   };
 
   const firstNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {

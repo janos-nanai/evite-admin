@@ -1,45 +1,56 @@
+import { GuestDataInit } from "../../types/guest-types";
+
 import { useState, FormEvent, ChangeEvent } from "react";
-import BasicFormCard from "./BasicFormCard";
+import { useDispatch } from "react-redux";
+
+import { createGuest } from "../../store/invitations-slice";
+import BasicFormModal from "./BasicFormModal";
 import BasicFormInput from "./BasicFormInput";
 
-const NewGuest = () => {
+const NewGuest = (props: { show: boolean; onClose: () => void }) => {
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
 
+  const dispatch = useDispatch();
+
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    const url = "http://localhost:8888/api/admin";
-    const data = {
+    const newGuestData: GuestDataInit = {
       firstName: firstNameInput,
       lastName: lastNameInput,
-      nickName: nickNameInput || null,
+      nickName: nickNameInput || undefined,
     };
 
-    fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      console.log(res);
-    });
+    dispatch(createGuest(newGuestData));
+
+    setFirstNameInput("");
+    setLastNameInput("");
+    setNickNameInput("");
+
+    props.onClose();
   };
 
   const firstNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setFirstNameInput(event.target.value);
+    setFirstNameInput(event.target.value.trim());
   };
 
   const lastNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setLastNameInput(event.target.value);
+    setLastNameInput(event.target.value.trim());
   };
 
   const nickNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setNickNameInput(event.target.value);
+    setNickNameInput(event.target.value.trim());
   };
 
   return (
-    <BasicFormCard title="ADD PARTNER" submitHandler={submitHandler}>
+    <BasicFormModal
+      title="CREATE GUEST PROFILE"
+      show={props.show}
+      onClose={props.onClose}
+      submitHandler={submitHandler}
+    >
       <BasicFormInput
         id="firstName"
         title="first name"
@@ -61,7 +72,7 @@ const NewGuest = () => {
         changeHandler={nickNameInputHandler}
         value={nickNameInput}
       />
-    </BasicFormCard>
+    </BasicFormModal>
   );
 };
 

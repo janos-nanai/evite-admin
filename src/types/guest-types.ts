@@ -31,3 +31,9 @@ export interface GuestData {
   createdDate: Date;
   modifiedDate: Date;
 }
+
+export interface GuestDataInit {
+  firstName: string;
+  lastName: string;
+  nickName?: string;
+}

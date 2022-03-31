@@ -1,7 +1,10 @@
-import { Accordion, Container, Col, Row } from "react-bootstrap";
-import { PersonFill } from "react-bootstrap-icons";
-
 import { GuestData } from "../../types/guest-types";
+
+import { Accordion, Container, Col, Row } from "react-bootstrap";
+
+import GuestDetails from "./GuestDetails";
+import GuestBadge from "../Badges/GuestBadge";
+import StatusBadge from "../Badges/StatusBadge";
 
 const Guest = (props: GuestData) => {
   return (
@@ -9,18 +12,21 @@ const Guest = (props: GuestData) => {
       <Accordion.Item eventKey="0">
         <Accordion.Header>
           <Container>
-            <Col>
-              {props.nickName || `${props.lastName} ${props.firstName}`}
-            </Col>
-            <Col>
-              <PersonFill />
-            </Col>
+            <Row>
+              <Col>
+                {`${props.lastName}, ${props.firstName}`}{" "}
+                <StatusBadge
+                  isComing={props.isComing}
+                  didReply={props.didReply}
+                />{" "}
+                <GuestBadge partner={!!props.partner} />
+              </Col>
+            </Row>
+            <Row>{props.nickName}</Row>
           </Container>
         </Accordion.Header>
         <Accordion.Body>
-          <p>{props.voucherId}</p>
-          <h4>{`${props.lastName} ${props.firstName}`}</h4>
-          {props.nickName && <p>{props.nickName}</p>}
+          <GuestDetails />
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>

@@ -1,20 +1,30 @@
-import { GuestData } from "../../types/guest-types";
+import { MainStore } from "../../types/store-types";
 
-import { Accordion } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Card } from "react-bootstrap";
 
 import Guest from "./Guest";
+import { fetchAll } from "../../store/invitations-slice";
 
-const GuestList = (props: {guests: GuestData[]}) => {
+const GuestList = () => {
+  const dispatch = useDispatch();
+  const guests = useSelector((state: MainStore) => state.invitations.guestList);
+
+  useEffect(() => {
+    dispatch(fetchAll());
+  }, [dispatch]);
 
   return (
-    <Accordion.Item eventKey="0">
-      <Accordion.Header>Guests</Accordion.Header>
-      <Accordion.Body>
-        {props.guests.map((guest) => {
+    <Card className="m-1">
+      <Card.Title>Guests</Card.Title>
+      <Card.Body>
+        {guests.map((guest) => {
           const {
             voucherId,
             firstName,
             lastName,
+            nickName,
             email,
             phone,
             isComing,
@@ -31,6 +41,7 @@ const GuestList = (props: {guests: GuestData[]}) => {
               voucherId={voucherId}
               firstName={firstName}
               lastName={lastName}
+              nickName={nickName}
               email={email}
               phone={phone}
               isComing={isComing}
@@ -43,8 +54,8 @@ const GuestList = (props: {guests: GuestData[]}) => {
             />
           );
         })}
-      </Accordion.Body>
-    </Accordion.Item>
+      </Card.Body>
+    </Card>
   );
 };
 
