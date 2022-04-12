@@ -2,17 +2,22 @@ export interface PartnerData {
   _id?: string;
   firstName: string;
   lastName: string;
-  nickName: string | null;
-  specialDiet: string[] | [];
+  nickName: string;
+  foodGlutenFree: boolean;
+  foodLactoseFree: boolean;
+  foodDiabetic: boolean;
 }
 
 export interface ChildData {
   _id?: string;
+  id?: string;
   firstName: string;
   lastName: string;
-  nickName: string | null;
+  nickName: string;
   age: number;
-  specialDiet: string[] | [];
+  foodGlutenFree: boolean;
+  foodLactoseFree: boolean;
+  foodDiabetic: boolean;
 }
 
 export interface GuestData {
@@ -20,20 +25,35 @@ export interface GuestData {
   voucherId: string;
   firstName: string;
   lastName: string;
-  nickName?: string;
-  email: string | null;
-  phone: string | null;
+  nickName: string;
+  email: string;
+  phone: string;
   isComing: boolean;
   didReply: boolean;
-  specialDiet: string[] | [];
+  foodGlutenFree: boolean;
+  foodLactoseFree: boolean;
+  foodDiabetic: boolean;
   partner: PartnerData | null;
-  children: ChildData[] | [];
-  createdDate: Date;
-  modifiedDate: Date;
+  children: ChildData[];
+  createdDate: number;
+  modifiedDate: number;
 }
 
 export interface GuestDataInit {
   firstName: string;
   lastName: string;
-  nickName?: string;
+  nickName: string;
+}
+
+export interface GuestDataUpdate {
+  firstName: string;
+  lastName: string;
+  nickName: string;
+  email: string;
+  phone: string;
+  isComing: boolean;
+  didReply: boolean;
+  foodGlutenFree: boolean;
+  foodLactoseFree: boolean;
+  foodDiabetic: boolean;
 }

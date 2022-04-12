@@ -1,12 +1,12 @@
 import { GuestData, GuestDataInit } from "../types/guest-types";
+import { GuestsState } from "../types/store-types";
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-// import { HTTP_STATUS } from "../constants/http-status";
 const API_URL = process.env.REACT_APP_BACKEND_ENTRY_POINT;
 
-const namespace = "invitations";
+const namespace = "guests";
 
 export const fetchAll = createAsyncThunk(`${namespace}/fetchAll`, async () => {
   const response = await axios.get(`${API_URL}/admin`);
@@ -15,38 +15,34 @@ export const fetchAll = createAsyncThunk(`${namespace}/fetchAll`, async () => {
 
 export const createGuest = createAsyncThunk(
   `${namespace}/createGuest`,
-  async (data: GuestDataInit) => {
-    const response = await axios.post(`${API_URL}/admin`, data);
-    return response.statusText;
+  async (newGuest: GuestDataInit) => {
+    const response: AxiosResponse<GuestData, any> = await axios.post(
+      `${API_URL}/admin`,
+      newGuest
+    );
+    return response.data;
   }
 );
 
-const initialState: {
-  guestList: GuestData[] | [];
-  adultsTotal: number;
-  kidsTotal: number;
-  isLoading: boolean;
-} = { guestList: [], adultsTotal: 0, kidsTotal: 0, isLoading: false };
+export const deleteGuest = createAsyncThunk(
+  `${namespace}/deleteGuest`,
+  async (voucherId: string) => {
+    await axios.delete(`${API_URL}/admin/${voucherId}`);
+    return voucherId;
+  }
+);
 
-const invitationsSlice = createSlice({
+const initialState: GuestsState = {
+  guestList: [],
+  adultsTotal: 0,
+  kidsTotal: 0,
+  isLoading: false,
+};
+
+const guestsSlice = createSlice({
   name: namespace,
   initialState,
-  reducers: {
-    // replaceList(state, action) {
-    //   if (action.payload.guestList) {
-    //     state.guestList = action.payload.guestList;
-    //   }
-    // },
-    // createGuest() {},
-    // updateGuest() {},
-    // deleteGuest() {},
-    // addPartner() {},
-    // updatePartner() {},
-    // deletePartner() {},
-    // addChild() {},
-    // updateChild() {},
-    // deleteChild() {},
-  },
+  reducers: {},
   extraReducers: (builder) => {
     //  fetchALL
     builder.addCase(fetchAll.pending, (state) => {
@@ -74,13 +70,28 @@ const invitationsSlice = createSlice({
     builder.addCase(createGuest.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(createGuest.fulfilled, (state) => {
+    builder.addCase(createGuest.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.guestList.push(action.payload);
     });
     builder.addCase(createGuest.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // deleteGuest
+    builder.addCase(deleteGuest.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteGuest.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.guestList = state.guestList.filter(
+        (i) => i.voucherId !== action.payload
+      );
+    });
+    builder.addCase(deleteGuest.rejected, (state) => {
       state.isLoading = false;
     });
   },
 });
 
-export const invitationReducer = invitationsSlice.reducer;
+export const guestsReducer = guestsSlice.reducer;

@@ -1,16 +1,22 @@
 import { PartnerData } from "../../types/guest-types";
 import { AppState } from "../../types/store-types";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  FormEvent,
+  ChangeEvent,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addPartner } from "../../store/single-guest-slice";
-import { closeNewPartnerModal } from "../../store/ui-slice";
+import { updatePartner } from "../../store/single-guest-slice";
+import { closeUpdatePartnerModal } from "../../store/ui-slice";
 import BasicFormModal from "./BasicFormModal";
 import BasicFormCheckbox from "./BasicFormCheckbox";
 import BasicFormInput from "./BasicFormInput";
 
-const NewPartner = () => {
+const UpdatePartner = () => {
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
@@ -20,12 +26,37 @@ const NewPartner = () => {
 
   const dispatch = useDispatch();
 
-  const show = useSelector((state: AppState) => state.ui.showNewPartner);
+  const currentPartnerData = useSelector(
+    (state: AppState) =>
+      state.singleGuest.data!.partner || {
+        firstName: "",
+        lastName: "",
+        nickName: "",
+        foodGlutenFree: false,
+        foodLactoseFree: false,
+        foodDiabetic: false,
+      }
+  );
+
+  const _updateForm = useCallback(() => {
+    setFirstNameInput(currentPartnerData.firstName);
+    setLastNameInput(currentPartnerData.lastName);
+    setNickNameInput(currentPartnerData.nickName);
+    setFoodGlutenFreeInput(currentPartnerData.foodGlutenFree);
+    setFoodLactoseFreeInput(currentPartnerData.foodLactoseFree);
+    setFoodDiabeticInput(currentPartnerData.foodDiabetic);
+  }, [currentPartnerData]);
+
+  const show = useSelector((state: AppState) => state.ui.showUpdatePartner);
+
+  useEffect(() => {
+    _updateForm();
+  }, [_updateForm, show]);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    const newPartnerData: PartnerData = {
+    const updatedPartnerData: PartnerData = {
       firstName: firstNameInput,
       lastName: lastNameInput,
       nickName: nickNameInput,
@@ -34,32 +65,25 @@ const NewPartner = () => {
       foodDiabetic: foodDiabeticInput,
     };
 
-    dispatch(addPartner(newPartnerData));
+    dispatch(updatePartner(updatedPartnerData));
 
-    setFirstNameInput("");
-    setLastNameInput("");
-    setNickNameInput("");
-    setFoodGlutenFreeInput(false);
-    setFoodLactoseFreeInput(false);
-    setFoodDiabeticInput(false);
-
-    dispatch(closeNewPartnerModal());
+    dispatch(closeUpdatePartnerModal());
   };
 
   const closeHandler = () => {
-    dispatch(closeNewPartnerModal());
+    dispatch(closeUpdatePartnerModal());
   };
 
   const firstNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setFirstNameInput(event.target.value);
+    setFirstNameInput(event.target.value.trim());
   };
 
   const lastNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setLastNameInput(event.target.value);
+    setLastNameInput(event.target.value.trim());
   };
 
   const nickNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setNickNameInput(event.target.value);
+    setNickNameInput(event.target.value.trim());
   };
 
   const foodGlutenFreeInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +102,7 @@ const NewPartner = () => {
 
   return (
     <BasicFormModal
-      title="ADD PARTNER"
+      title="UPDATE GUEST"
       show={show}
       onClose={closeHandler}
       submitHandler={submitHandler}
@@ -123,4 +147,4 @@ const NewPartner = () => {
   );
 };
 
-export default NewPartner;
+export default UpdatePartner;

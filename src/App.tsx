@@ -1,26 +1,18 @@
-import React, { useState } from "react";
-import { Accordion } from "react-bootstrap";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import GuestList from "./components/Guests/GuestList";
 import Layout from "./components/Layout/Layout";
-import NewGuest from "./components/Form/NewGuest";
+import Summary from "./pages/Summary";
+import EditGuest from "./pages/EditGuest";
 
 function App() {
-  const [showCreateGuest, setShowCreateGuest] = useState(false);
-
-  const openCreateGuestHandler = () => {
-    setShowCreateGuest(true);
-  };
-  const closeCreateGuestHandler = () => {
-    setShowCreateGuest(false);
-  };
-
   return (
-    <Layout onCreateGuest={openCreateGuestHandler}>
-      <NewGuest show={showCreateGuest} onClose={closeCreateGuestHandler} />
-      <Accordion defaultActiveKey="0">
-        <GuestList />
-      </Accordion>
+    <Layout>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Summary />} />
+          <Route path="/:voucherId" element={<EditGuest />} />
+        </Routes>
+      </BrowserRouter>
     </Layout>
   );
 }

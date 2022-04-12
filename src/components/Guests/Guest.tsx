@@ -16,7 +16,9 @@ const Guest = (props: GuestData) => {
     phone,
     isComing,
     didReply,
-    specialDiet,
+    foodGlutenFree,
+    foodLactoseFree,
+    foodDiabetic,
     partner,
     children,
     createdDate,
@@ -24,7 +26,7 @@ const Guest = (props: GuestData) => {
   } = props;
   return (
     <Accordion>
-      <Accordion.Item eventKey="0">
+      <Accordion.Item eventKey={voucherId + "a"}>
         <Accordion.Header>
           <Container>
             <Row>
@@ -48,7 +50,9 @@ const Guest = (props: GuestData) => {
             phone={phone}
             isComing={isComing}
             didReply={didReply}
-            specialDiet={specialDiet}
+            foodGlutenFree={foodGlutenFree}
+            foodLactoseFree={foodLactoseFree}
+            foodDiabetic={foodDiabetic}
             partner={partner}
             children={children}
             createdDate={createdDate}

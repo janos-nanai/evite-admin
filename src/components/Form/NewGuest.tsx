@@ -1,18 +1,22 @@
 import { GuestDataInit } from "../../types/guest-types";
+import { AppState } from "../../types/store-types";
 
 import { useState, FormEvent, ChangeEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { createGuest } from "../../store/invitations-slice";
+import { createGuest } from "../../store/guests-slice";
+import { closeNewGuestModal } from "../../store/ui-slice";
 import BasicFormModal from "./BasicFormModal";
 import BasicFormInput from "./BasicFormInput";
 
-const NewGuest = (props: { show: boolean; onClose: () => void }) => {
+const NewGuest = () => {
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
 
   const dispatch = useDispatch();
+
+  const show = useSelector((state: AppState) => state.ui.showNewGuest);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -20,7 +24,7 @@ const NewGuest = (props: { show: boolean; onClose: () => void }) => {
     const newGuestData: GuestDataInit = {
       firstName: firstNameInput,
       lastName: lastNameInput,
-      nickName: nickNameInput || undefined,
+      nickName: nickNameInput,
     };
 
     dispatch(createGuest(newGuestData));
@@ -29,7 +33,11 @@ const NewGuest = (props: { show: boolean; onClose: () => void }) => {
     setLastNameInput("");
     setNickNameInput("");
 
-    props.onClose();
+    dispatch(closeNewGuestModal());
+  };
+
+  const closeHandler = () => {
+    dispatch(closeNewGuestModal());
   };
 
   const firstNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +55,8 @@ const NewGuest = (props: { show: boolean; onClose: () => void }) => {
   return (
     <BasicFormModal
       title="CREATE GUEST PROFILE"
-      show={props.show}
-      onClose={props.onClose}
+      show={show}
+      onClose={closeHandler}
       submitHandler={submitHandler}
     >
       <BasicFormInput

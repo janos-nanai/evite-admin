@@ -1,7 +1,20 @@
 import { GuestData } from "../../types/guest-types";
 
 import React from "react";
-import { Card, ListGroup, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  Card,
+  Container,
+  ListGroup,
+  Row,
+  Col,
+  Button,
+  ButtonGroup,
+} from "react-bootstrap";
+import { TrashFill as TrashIcon } from "react-bootstrap-icons";
+
+import { deleteGuest } from "../../store/guests-slice";
 
 const GuestDetails = (props: GuestData) => {
   const {
@@ -13,17 +26,40 @@ const GuestDetails = (props: GuestData) => {
     phone,
     isComing,
     didReply,
-    specialDiet,
+    foodGlutenFree,
+    foodLactoseFree,
+    foodDiabetic,
     partner,
     children,
     createdDate,
     modifiedDate,
   } = props;
+
   const createdDateStr = createdDate.toString();
   const modifiedDateStr = modifiedDate.toString();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate(`/${voucherId}`);
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteGuest(voucherId));
+  };
+
   return (
     <React.Fragment>
-      <h5>{`voucherID: ${voucherId}`}</h5>
+      <Container>
+        <h5>{`voucherID: ${voucherId}`}</h5>
+        <ButtonGroup>
+          <Button onClick={handleEdit}>EDIT</Button>
+          <Button onClick={handleDelete}>
+            <TrashIcon />
+          </Button>
+        </ButtonGroup>
+      </Container>
       <Card>
         <Card.Header>
           <Row>
@@ -32,7 +68,6 @@ const GuestDetails = (props: GuestData) => {
               <Card.Subtitle>{`${
                 !!nickName ? '"' + nickName + '"' : ""
               }`}</Card.Subtitle>
-              <Card.Subtitle>{specialDiet}</Card.Subtitle>
             </Col>
             {!!partner && (
               <Col>
@@ -40,21 +75,18 @@ const GuestDetails = (props: GuestData) => {
                 <Card.Subtitle>{`${
                   !!partner.nickName ? '"' + partner.nickName + '"' : ""
                 }`}</Card.Subtitle>
-                <Card.Subtitle>{partner.specialDiet}</Card.Subtitle>
               </Col>
             )}
           </Row>
         </Card.Header>
         <Card.Body>
-          <Card.Text>
-            <p className="mb-0">{`created: ${createdDateStr}`}</p>
-            <p>{`last mod.: ${modifiedDateStr}`}</p>
-            <p>{`contacts: ${email || ""} ${!!email && !!phone ? "/" : ""} ${
-              phone || ""
-            }`}</p>
-            <p>{`reply: ${didReply}`}</p>
-            <p>{`coming: ${isComing}`}</p>
-          </Card.Text>
+          <p className="mb-0">{`created: ${createdDateStr}`}</p>
+          <p>{`last mod.: ${modifiedDateStr}`}</p>
+          <p>{`contacts: ${email || ""} ${!!email && !!phone ? "/" : ""} ${
+            phone || ""
+          }`}</p>
+          <p>{`reply: ${didReply}`}</p>
+          <p>{`coming: ${isComing}`}</p>
         </Card.Body>
       </Card>
       {!!children.length && (
@@ -67,10 +99,17 @@ const GuestDetails = (props: GuestData) => {
           <Card.Body>
             <ListGroup>
               {children.map((child) => {
-                const { firstName, lastName, nickName, age, specialDiet } =
-                  child;
+                const {
+                  firstName,
+                  lastName,
+                  nickName,
+                  age,
+                  foodGlutenFree,
+                  foodLactoseFree,
+                  foodDiabetic,
+                } = child;
                 return (
-                  <ListGroup.Item>
+                  <ListGroup.Item key={child._id}>
                     <Row>
                       <Col>
                         {`${lastName}, ${firstName} ${
@@ -78,9 +117,6 @@ const GuestDetails = (props: GuestData) => {
                         }`}
                       </Col>
                       <Col>{`age: ${age}`}</Col>
-                    </Row>
-                    <Row>
-                      <Col>{specialDiet}</Col>
                     </Row>
                   </ListGroup.Item>
                 );

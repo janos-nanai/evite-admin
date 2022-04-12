@@ -2,8 +2,17 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { useDispatch } from "react-redux";
 
-const MainNavigation = (props: { onCreateGuest: () => void }) => {
+import { openNewGuestModal } from "../../store/ui-slice";
+
+const MainNavigation = () => {
+  const dispatch = useDispatch();
+
+  const addGuestHandler = () => {
+    dispatch(openNewGuestModal());
+  };
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container fluid>
@@ -12,7 +21,7 @@ const MainNavigation = (props: { onCreateGuest: () => void }) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Button>LOGIN</Button>
-            <Button onClick={props.onCreateGuest}>ADD NEW GUEST</Button>
+            <Button onClick={addGuestHandler}>ADD NEW GUEST</Button>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -1,15 +1,15 @@
-import { MainStore } from "../../types/store-types";
+import { AppState } from "../../types/store-types";
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card } from "react-bootstrap";
 
 import Guest from "./Guest";
-import { fetchAll } from "../../store/invitations-slice";
+import { fetchAll } from "../../store/guests-slice";
 
 const GuestList = () => {
   const dispatch = useDispatch();
-  const guests = useSelector((state: MainStore) => state.invitations.guestList);
+  const guests = useSelector((state: AppState) => state.guests.guestList);
 
   useEffect(() => {
     dispatch(fetchAll());
@@ -29,7 +29,9 @@ const GuestList = () => {
             phone,
             isComing,
             didReply,
-            specialDiet,
+            foodGlutenFree,
+            foodLactoseFree,
+            foodDiabetic,
             partner,
             children,
             createdDate,
@@ -46,7 +48,9 @@ const GuestList = () => {
               phone={phone}
               isComing={isComing}
               didReply={didReply}
-              specialDiet={specialDiet}
+              foodGlutenFree={foodGlutenFree}
+              foodLactoseFree={foodLactoseFree}
+              foodDiabetic={foodDiabetic}
               partner={partner}
               children={children}
               createdDate={createdDate}

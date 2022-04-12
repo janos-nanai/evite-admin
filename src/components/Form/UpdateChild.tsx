@@ -1,65 +1,108 @@
-import { PartnerData } from "../../types/guest-types";
+import { ChildData } from "../../types/guest-types";
 import { AppState } from "../../types/store-types";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  FormEvent,
+  ChangeEvent,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addPartner } from "../../store/single-guest-slice";
-import { closeNewPartnerModal } from "../../store/ui-slice";
+import { updateChild } from "../../store/single-guest-slice";
+import { closeUpdateChildModal } from "../../store/ui-slice";
 import BasicFormModal from "./BasicFormModal";
 import BasicFormCheckbox from "./BasicFormCheckbox";
 import BasicFormInput from "./BasicFormInput";
 
-const NewPartner = () => {
+const UpdateChild = () => {
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
+  const [ageInput, setAgeInput] = useState(0);
   const [foodGlutenFreeInput, setFoodGlutenFreeInput] = useState(false);
   const [foodLactoseFreeInput, setFoodLactoseFreeInput] = useState(false);
   const [foodDiabeticInput, setFoodDiabeticInput] = useState(false);
 
   const dispatch = useDispatch();
 
-  const show = useSelector((state: AppState) => state.ui.showNewPartner);
+  const currentChildId = useSelector(
+    (state: AppState) => state.ui.currentChildId
+  );
+
+  const currentChildData = useSelector(
+    (state: AppState) =>
+      state.singleGuest.data!.children.find(
+        (i) => i._id === currentChildId
+      ) || {
+        firstName: "",
+        lastName: "",
+        nickName: "",
+        age: 0,
+        foodGlutenFree: false,
+        foodLactoseFree: false,
+        foodDiabetic: false,
+      }
+  );
+
+  const _updateForm = useCallback(() => {
+    setFirstNameInput(currentChildData.firstName);
+    setLastNameInput(currentChildData.lastName);
+    setNickNameInput(currentChildData.nickName);
+    setAgeInput(currentChildData.age);
+    setFoodGlutenFreeInput(currentChildData.foodGlutenFree);
+    setFoodLactoseFreeInput(currentChildData.foodLactoseFree);
+    setFoodDiabeticInput(currentChildData.foodDiabetic);
+  }, [currentChildData]);
+
+  const show = useSelector((state: AppState) => state.ui.showUpdateChild);
+
+  useEffect(() => {
+    _updateForm();
+  }, [_updateForm, show]);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    const newPartnerData: PartnerData = {
+    const updatedChildData: ChildData = {
       firstName: firstNameInput,
       lastName: lastNameInput,
       nickName: nickNameInput,
+      age: ageInput,
       foodGlutenFree: foodGlutenFreeInput,
       foodLactoseFree: foodLactoseFreeInput,
       foodDiabetic: foodDiabeticInput,
     };
 
-    dispatch(addPartner(newPartnerData));
+    dispatch(
+      updateChild({
+        childId: currentChildId,
+        childChangeData: updatedChildData,
+      })
+    );
 
-    setFirstNameInput("");
-    setLastNameInput("");
-    setNickNameInput("");
-    setFoodGlutenFreeInput(false);
-    setFoodLactoseFreeInput(false);
-    setFoodDiabeticInput(false);
-
-    dispatch(closeNewPartnerModal());
+    dispatch(closeUpdateChildModal());
   };
 
   const closeHandler = () => {
-    dispatch(closeNewPartnerModal());
+    dispatch(closeUpdateChildModal());
   };
 
   const firstNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setFirstNameInput(event.target.value);
+    setFirstNameInput(event.target.value.trim());
   };
 
   const lastNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setLastNameInput(event.target.value);
+    setLastNameInput(event.target.value.trim());
   };
 
   const nickNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setNickNameInput(event.target.value);
+    setNickNameInput(event.target.value.trim());
+  };
+
+  const ageInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setAgeInput(+event.target.value);
   };
 
   const foodGlutenFreeInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +121,7 @@ const NewPartner = () => {
 
   return (
     <BasicFormModal
-      title="ADD PARTNER"
+      title="UPDATE CHILD"
       show={show}
       onClose={closeHandler}
       submitHandler={submitHandler}
@@ -104,6 +147,13 @@ const NewPartner = () => {
         changeHandler={nickNameInputHandler}
         value={nickNameInput}
       />
+      <BasicFormInput
+        id="age"
+        title="age"
+        type="number"
+        changeHandler={ageInputHandler}
+        value={ageInput.toString()}
+      />
       <BasicFormCheckbox
         title="gluten-free"
         changeHandler={foodGlutenFreeInputHandler}
@@ -123,4 +173,4 @@ const NewPartner = () => {
   );
 };
 
-export default NewPartner;
+export default UpdateChild;
