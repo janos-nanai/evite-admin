@@ -5,7 +5,7 @@ import { AppState } from "../types/store-types";
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const API_URL = process.env.REACT_APP_BACKEND_ENTRY_POINT;
+const API_URL = process.env.REACT_APP_BACKEND_ENTRY_POINT + "/guest";
 
 const null_timestamp = 0;
 
@@ -13,8 +13,8 @@ const namespace = "singleGuest";
 
 export const fetchOneByVoucherId = createAsyncThunk(
   `${namespace}/fetchOneByVoucherId`,
-  async (voucherId: string) => {
-    const response = await axios.get(`${API_URL}/admin/${voucherId}`);
+  async (id: string) => {
+    const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
   }
 );
@@ -25,7 +25,7 @@ export const updateGuest = createAsyncThunk(
     const state = getState() as AppState;
     const guestState = state.singleGuest;
     const response = await axios.patch(
-      `${API_URL}/admin/${guestState.data!.voucherId}`,
+      `${API_URL}/${guestState.data!._id}`,
       guestChangeData
     );
     return response.data;
@@ -36,11 +36,8 @@ export const addPartner = createAsyncThunk(
   `${namespace}/addPartner`,
   async (partnerData: PartnerData, { getState }) => {
     const state = getState() as AppState;
-    const voucherId = state.singleGuest.data!.voucherId;
-    const response = await axios.post(
-      `${API_URL}/admin/${voucherId}/partner`,
-      partnerData
-    );
+    const id = state.singleGuest.data!._id;
+    const response = await axios.post(`${API_URL}/${id}/partner`, partnerData);
     return response.data;
   }
 );
@@ -49,8 +46,8 @@ export const deletePartner = createAsyncThunk(
   `${namespace}/deletePartner`,
   async (_, { getState }) => {
     const state = getState() as AppState;
-    const voucherId = state.singleGuest.data!.voucherId;
-    await axios.delete(`${API_URL}/admin/${voucherId}/partner`);
+    const id = state.singleGuest.data!._id;
+    await axios.delete(`${API_URL}/${id}/partner`);
   }
 );
 
@@ -58,11 +55,8 @@ export const updatePartner = createAsyncThunk(
   `${namespace}/updatePartner`,
   async (partnerChangeData: {}, { getState }) => {
     const state = getState() as AppState;
-    const voucherId = state.singleGuest.data!.voucherId;
-    const response = await axios.patch(
-      `${API_URL}/admin/${voucherId}`,
-      partnerChangeData
-    );
+    const id = state.singleGuest.data!._id;
+    const response = await axios.patch(`${API_URL}/${id}`, partnerChangeData);
     return response.data;
   }
 );
@@ -71,11 +65,8 @@ export const addChild = createAsyncThunk(
   `${namespace}/addChild`,
   async (childData: ChildData, { getState }) => {
     const state = getState() as AppState;
-    const voucherId = state.singleGuest.data!.voucherId;
-    const response = await axios.post(
-      `${API_URL}/admin/${voucherId}/children`,
-      childData
-    );
+    const id = state.singleGuest.data!._id;
+    const response = await axios.post(`${API_URL}/${id}/children`, childData);
     return response.data;
   }
 );
@@ -84,8 +75,8 @@ export const deleteChild = createAsyncThunk(
   `${namespace}/deleteChild`,
   async (childId: string, { getState }) => {
     const state = getState() as AppState;
-    const voucherId = state.singleGuest.data!.voucherId;
-    await axios.delete(`${API_URL}/admin/${voucherId}/children/${childId}`);
+    const id = state.singleGuest.data!._id;
+    await axios.delete(`${API_URL}/${id}/children/${childId}`);
     return childId;
   }
 );
@@ -94,9 +85,9 @@ export const updateChild = createAsyncThunk(
   `${namespace}/updateChild`,
   async (args: { childId: string; childChangeData: {} }, { getState }) => {
     const state = getState() as AppState;
-    const voucherId = state.singleGuest.data!.voucherId;
+    const id = state.singleGuest.data!._id;
     const response = await axios.patch(
-      `${API_URL}/admin/${voucherId}/children/${args.childId}`,
+      `${API_URL}/${id}/children/${args.childId}`,
       args.childChangeData
     );
     return response.data;
@@ -105,7 +96,7 @@ export const updateChild = createAsyncThunk(
 
 const initialState: SingleGuestState = {
   data: {
-    voucherId: "",
+    _id: "",
     firstName: "",
     lastName: "",
     nickName: "",

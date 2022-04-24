@@ -22,7 +22,6 @@ export interface ChildData {
 
 export interface GuestData {
   _id?: string;
-  voucherId: string;
   firstName: string;
   lastName: string;
   nickName: string;
@@ -40,6 +39,8 @@ export interface GuestData {
 }
 
 export interface GuestDataInit {
+  voucherId: string;
+  voucherPass: string;
   firstName: string;
   lastName: string;
   nickName: string;

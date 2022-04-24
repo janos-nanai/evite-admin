@@ -49,7 +49,9 @@ const ChildrenEditCard = () => {
             />
           );
         })}
-        <Button onClick={addHandler}>ADD CHILD</Button>
+        <Container>
+          <Button onClick={addHandler}>ADD CHILD</Button>
+        </Container>
       </Container>
     </BasicEditCard>
   );

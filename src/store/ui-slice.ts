@@ -3,6 +3,7 @@ import { UiState } from "../types/store-types";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: UiState = {
+  showLoginAdmin: false,
   showNewGuest: false,
   showNewPartner: false,
   showNewChild: false,
@@ -16,6 +17,12 @@ const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
+    openLoginAdminModal(state) {
+      state.showLoginAdmin = true;
+    },
+    closeLoginAdminModal(state) {
+      state.showLoginAdmin = false;
+    },
     openNewGuestModal(state) {
       state.showNewGuest = true;
     },
@@ -59,6 +66,8 @@ const uiSlice = createSlice({
 });
 
 export const {
+  openLoginAdminModal,
+  closeLoginAdminModal,
   openNewGuestModal,
   closeNewGuestModal,
   openNewPartnerModal,

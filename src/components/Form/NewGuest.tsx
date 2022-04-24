@@ -8,8 +8,11 @@ import { createGuest } from "../../store/guests-slice";
 import { closeNewGuestModal } from "../../store/ui-slice";
 import BasicFormModal from "./BasicFormModal";
 import BasicFormInput from "./BasicFormInput";
+import { Container } from "react-bootstrap";
 
 const NewGuest = () => {
+  const [voucherIdInput, setVoucherIdInput] = useState("");
+  const [voucherPassInput, setVoucherPassInput] = useState("");
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
   const [nickNameInput, setNickNameInput] = useState("");
@@ -22,6 +25,8 @@ const NewGuest = () => {
     event.preventDefault();
 
     const newGuestData: GuestDataInit = {
+      voucherId: voucherIdInput,
+      voucherPass: voucherPassInput,
       firstName: firstNameInput,
       lastName: lastNameInput,
       nickName: nickNameInput,
@@ -29,6 +34,8 @@ const NewGuest = () => {
 
     dispatch(createGuest(newGuestData));
 
+    setVoucherIdInput("");
+    setVoucherPassInput("");
     setFirstNameInput("");
     setLastNameInput("");
     setNickNameInput("");
@@ -38,6 +45,14 @@ const NewGuest = () => {
 
   const closeHandler = () => {
     dispatch(closeNewGuestModal());
+  };
+
+  const voucherIdInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setVoucherIdInput(event.target.value.trim());
+  };
+
+  const voucherPassInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setVoucherPassInput(event.target.value.trim());
   };
 
   const firstNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +74,26 @@ const NewGuest = () => {
       onClose={closeHandler}
       submitHandler={submitHandler}
     >
+      <Container className="d-flex">
+        <Container style={{ width: "50%" }}>
+          <BasicFormInput
+            id="voucherId"
+            title="voucher-id"
+            type="text"
+            changeHandler={voucherIdInputHandler}
+            value={voucherIdInput}
+          />
+        </Container>
+        <Container>
+          <BasicFormInput
+            id="voucherPass"
+            title="voucher-pass"
+            type="text"
+            changeHandler={voucherPassInputHandler}
+            value={voucherPassInput}
+          />
+        </Container>
+      </Container>
       <BasicFormInput
         id="firstName"
         title="first name"

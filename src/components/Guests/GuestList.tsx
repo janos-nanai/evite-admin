@@ -10,10 +10,11 @@ import { fetchAll } from "../../store/guests-slice";
 const GuestList = () => {
   const dispatch = useDispatch();
   const guests = useSelector((state: AppState) => state.guests.guestList);
+  const isLoggedIn = useSelector((state: AppState) => state.auth.isLoggedIn);
 
   useEffect(() => {
-    dispatch(fetchAll());
-  }, [dispatch]);
+    if (isLoggedIn) dispatch(fetchAll());
+  }, [dispatch, isLoggedIn]);
 
   return (
     <Card className="m-1">
@@ -21,7 +22,7 @@ const GuestList = () => {
       <Card.Body>
         {guests.map((guest) => {
           const {
-            voucherId,
+            _id,
             firstName,
             lastName,
             nickName,
@@ -39,8 +40,8 @@ const GuestList = () => {
           } = guest;
           return (
             <Guest
-              key={voucherId}
-              voucherId={voucherId}
+              key={_id}
+              _id={_id}
               firstName={firstName}
               lastName={lastName}
               nickName={nickName}

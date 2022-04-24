@@ -18,7 +18,7 @@ import { deleteGuest } from "../../store/guests-slice";
 
 const GuestDetails = (props: GuestData) => {
   const {
-    voucherId,
+    _id,
     firstName,
     lastName,
     nickName,
@@ -42,17 +42,17 @@ const GuestDetails = (props: GuestData) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    navigate(`/${voucherId}`);
+    navigate(`/${_id}`);
   };
 
   const handleDelete = () => {
-    dispatch(deleteGuest(voucherId));
+    dispatch(deleteGuest(_id!));
   };
 
   return (
     <React.Fragment>
       <Container>
-        <h5>{`voucherID: ${voucherId}`}</h5>
+        <h5>{`ID: ${_id}`}</h5>
         <ButtonGroup>
           <Button onClick={handleEdit}>EDIT</Button>
           <Button onClick={handleDelete}>

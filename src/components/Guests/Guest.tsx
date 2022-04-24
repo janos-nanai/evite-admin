@@ -8,7 +8,7 @@ import StatusBadge from "../Badges/StatusBadge";
 
 const Guest = (props: GuestData) => {
   const {
-    voucherId,
+    _id,
     firstName,
     lastName,
     nickName,
@@ -26,7 +26,7 @@ const Guest = (props: GuestData) => {
   } = props;
   return (
     <Accordion>
-      <Accordion.Item eventKey={voucherId + "a"}>
+      <Accordion.Item eventKey={_id + "a"}>
         <Accordion.Header>
           <Container>
             <Row>
@@ -42,7 +42,7 @@ const Guest = (props: GuestData) => {
         </Accordion.Header>
         <Accordion.Body>
           <GuestDetails
-            voucherId={voucherId}
+            _id={_id}
             firstName={firstName}
             lastName={lastName}
             nickName={nickName}

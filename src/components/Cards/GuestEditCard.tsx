@@ -14,7 +14,7 @@ const GuestEditCard = () => {
   const guestData = useSelector((state: AppState) => state.singleGuest.data);
 
   const {
-    voucherId,
+    _id,
     firstName,
     lastName,
     nickName,
@@ -32,7 +32,7 @@ const GuestEditCard = () => {
   };
 
   const deleteHandler = () => {
-    dispatch(deleteGuest(voucherId));
+    dispatch(deleteGuest(_id!));
   };
 
   return (

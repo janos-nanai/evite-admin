@@ -3,6 +3,13 @@ import { GuestData } from "./guest-types";
 
 export type AppState = ReturnType<typeof store.getState>;
 
+export interface AuthState {
+  adminId: string;
+  isLoggedIn: boolean;
+  accessToken: string;
+  isLoading: boolean;
+}
+
 export interface GuestsState {
   guestList: GuestData[];
   adultsTotal: number;
@@ -16,6 +23,7 @@ export interface SingleGuestState {
 }
 
 export interface UiState {
+  showLoginAdmin: boolean;
   showNewGuest: boolean;
   showNewPartner: boolean;
   showNewChild: boolean;

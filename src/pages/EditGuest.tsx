@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { useParams, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
 import { fetchOneByVoucherId } from "../store/single-guest-slice";
@@ -10,15 +10,21 @@ import ChildrenEditCard from "../components/Cards/ChildrenEditCard";
 
 const EditGuest = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { voucherId } = useParams();
 
   useEffect(() => {
     dispatch(fetchOneByVoucherId(voucherId!));
   }, [dispatch, voucherId]);
 
+  const backHandler = () => {
+    navigate("/");
+  };
+
   return (
     <React.Fragment>
       <h1>Guest Profile</h1>
+      <Button onClick={backHandler}>BACK TO SUMMARY</Button>
       <Container>
         <Row className="mb-2">
           <Col>

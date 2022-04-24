@@ -4,12 +4,12 @@ import { GuestsState } from "../types/store-types";
 import axios, { AxiosResponse } from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const API_URL = process.env.REACT_APP_BACKEND_ENTRY_POINT;
+const API_URL = process.env.REACT_APP_BACKEND_ENTRY_POINT + "/guest";
 
 const namespace = "guests";
 
 export const fetchAll = createAsyncThunk(`${namespace}/fetchAll`, async () => {
-  const response = await axios.get(`${API_URL}/admin`);
+  const response = await axios.get(`${API_URL}/`);
   return response.data;
 });
 
@@ -17,7 +17,7 @@ export const createGuest = createAsyncThunk(
   `${namespace}/createGuest`,
   async (newGuest: GuestDataInit) => {
     const response: AxiosResponse<GuestData, any> = await axios.post(
-      `${API_URL}/admin`,
+      `${API_URL}/`,
       newGuest
     );
     return response.data;
@@ -26,9 +26,9 @@ export const createGuest = createAsyncThunk(
 
 export const deleteGuest = createAsyncThunk(
   `${namespace}/deleteGuest`,
-  async (voucherId: string) => {
-    await axios.delete(`${API_URL}/admin/${voucherId}`);
-    return voucherId;
+  async (id: string) => {
+    await axios.delete(`${API_URL}/${id}`);
+    return id;
   }
 );
 
@@ -84,9 +84,7 @@ const guestsSlice = createSlice({
     });
     builder.addCase(deleteGuest.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.guestList = state.guestList.filter(
-        (i) => i.voucherId !== action.payload
-      );
+      state.guestList = state.guestList.filter((i) => i._id !== action.payload);
     });
     builder.addCase(deleteGuest.rejected, (state) => {
       state.isLoading = false;
