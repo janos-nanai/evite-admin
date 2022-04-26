@@ -17,8 +17,10 @@ const GuestList = () => {
   }, [dispatch, isLoggedIn]);
 
   return (
-    <Card className="m-1">
-      <Card.Title>Guests</Card.Title>
+    <Card>
+      <Card.Header>
+        <Card.Title>Guests</Card.Title>
+      </Card.Header>
       <Card.Body>
         {guests.map((guest) => {
           const {

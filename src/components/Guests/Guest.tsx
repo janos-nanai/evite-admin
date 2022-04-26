@@ -1,10 +1,12 @@
 import { GuestData } from "../../types/guest-types";
 
+import React from "react";
 import { Accordion, Container, Col, Row } from "react-bootstrap";
 
 import GuestDetails from "./GuestDetails";
 import GuestBadge from "../Badges/GuestBadge";
 import StatusBadge from "../Badges/StatusBadge";
+import ChildrenBadge from "../Badges/ChildrenBadge";
 
 const Guest = (props: GuestData) => {
   const {
@@ -35,7 +37,14 @@ const Guest = (props: GuestData) => {
             <Row>
               <Col>
                 <StatusBadge isComing={isComing} didReply={didReply} />{" "}
-                {isComing && didReply && <GuestBadge partner={!!partner} />}
+                {isComing && didReply && (
+                  <React.Fragment>
+                    <GuestBadge partner={!!partner} />{" "}
+                    {!!children.length && (
+                      <ChildrenBadge count={children.length} />
+                    )}
+                  </React.Fragment>
+                )}
               </Col>
             </Row>
           </Container>

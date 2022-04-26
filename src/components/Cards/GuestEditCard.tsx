@@ -3,6 +3,7 @@ import { AppState } from "../../types/store-types";
 import { Button, Container, ListGroup } from "react-bootstrap";
 import { TrashFill as TrashIcon } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import BasicEditCard from "./BasicEditCard";
 import { deleteGuest } from "../../store/guests-slice";
@@ -10,6 +11,7 @@ import { openUpdateGuestModal } from "../../store/ui-slice";
 
 const GuestEditCard = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const guestData = useSelector((state: AppState) => state.singleGuest.data);
 
@@ -33,6 +35,7 @@ const GuestEditCard = () => {
 
   const deleteHandler = () => {
     dispatch(deleteGuest(_id!));
+    navigate("/");
   };
 
   return (

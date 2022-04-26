@@ -3,7 +3,6 @@ import { AppState } from "./types/store-types";
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Card } from "react-bootstrap";
 
 import { restoreAuthState } from "./store/auth-slice";
 import Layout from "./components/Layout/Layout";
