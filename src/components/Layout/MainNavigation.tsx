@@ -13,7 +13,10 @@ import { logout } from "../../store/auth-slice";
 
 const MainNavigation = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state: AppState) => state.auth.isLoggedIn);
+  const { accessToken, refreshToken } = useSelector(
+    (state: AppState) => state.auth
+  );
+  const isLoggedIn = !!(accessToken || refreshToken);
 
   const addGuestHandler = () => {
     dispatch(openNewGuestModal());
@@ -28,8 +31,8 @@ const MainNavigation = () => {
   };
 
   const logoutHandler = () => {
-    dispatch(logout());
-    localStorage.removeItem("localAuthData");
+    dispatch(logout(refreshToken));
+    // localStorage.removeItem("refreshToken");
   };
 
   return (

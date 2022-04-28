@@ -89,9 +89,7 @@ const StatList = () => {
   };
 
   _countStats();
-
-  console.log(stats);
-
+  
   return (
     <Card>
       <Card.Header>

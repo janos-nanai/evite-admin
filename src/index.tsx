@@ -3,12 +3,16 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
 import App from "./App";
-import { authReqInterceptor } from "./api/axios-interceptors";
+import {
+  authAccessReqInterceptor,
+  authRefreshResInterceptor,
+} from "./api/axios-interceptors";
 import store from "./store";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-authReqInterceptor();
+authAccessReqInterceptor();
+authRefreshResInterceptor();
 
 ReactDOM.render(
   <React.StrictMode>

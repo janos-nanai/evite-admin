@@ -10,7 +10,10 @@ import { fetchAll } from "../../store/guests-slice";
 const GuestList = () => {
   const dispatch = useDispatch();
   const guests = useSelector((state: AppState) => state.guests.guestList);
-  const isLoggedIn = useSelector((state: AppState) => state.auth.isLoggedIn);
+  const { accessToken, refreshToken } = useSelector(
+    (state: AppState) => state.auth
+  );
+  const isLoggedIn = !!(accessToken || refreshToken);
 
   useEffect(() => {
     if (isLoggedIn) dispatch(fetchAll());

@@ -5,8 +5,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: AuthState = {
   adminId: "",
-  isLoggedIn: false,
   accessToken: "",
+  refreshToken: "",
   isLoading: false,
 };
 
@@ -17,8 +17,26 @@ const namespace = "auth";
 export const login = createAsyncThunk(
   `${namespace}/login`,
   async (args: { adminId: string; adminPass: string }) => {
-    const response = await axios.post(`${API_URL}/login/admin`, args);
+    const response = await axios.post(`${API_URL}/auth/admin-login`, args);
+    const { refreshToken } = response.data;
+    localStorage.setItem("localAuthData", JSON.stringify({ refreshToken }));
     return response.data;
+  }
+);
+
+// export const refreshAccessToken = createAsyncThunk(
+//   `${namespace}/refreshAccessToken`,
+//   async (token: string) => {
+//     const response = await axios.post(`${API_URL}/auth/token`, token);
+//     return response.data;
+//   }
+// );
+
+export const logout = createAsyncThunk(
+  `${namespace}/logout`,
+  async (refreshToken: string) => {
+    await axios.post(`${API_URL}/auth/logout`, refreshToken);
+    localStorage.removeItem("localAuthData");
   }
 );
 
@@ -26,47 +44,65 @@ const authSlice = createSlice({
   name: namespace,
   initialState,
   reducers: {
-    logout(state) {
-      state.adminId = "";
-      state.accessToken = "";
-      state.isLoggedIn = false;
+    restoreAuthState(state, action) {
+      const { refreshToken } = action.payload;
+      state.refreshToken = refreshToken;
       state.isLoading = false;
     },
-    restoreAuthState(state, action) {
-      console.log("action.payload", action.payload);
+    refreshAccessToken(state, action) {
+      const { adminId, accessToken } = action.payload;
 
-      const { adminId, accessToken, isLoggedIn } = action.payload;
-
+      state.isLoading = false;
       state.adminId = adminId;
       state.accessToken = accessToken;
-      state.isLoggedIn = isLoggedIn;
-      state.isLoading = false;
-
-      console.log(
-        "state:",
-        state.adminId,
-        state.accessToken,
-        state.accessToken,
-        state.isLoading
-      );
     },
   },
   extraReducers: (builder) => {
+    // login
     builder.addCase(login.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false;
-      const { adminId, accessToken } = action.payload;
+      const { adminId, accessToken, refreshToken } = action.payload;
       state.adminId = adminId;
       state.accessToken = accessToken;
-      state.isLoggedIn = true;
+      state.refreshToken = refreshToken;
     });
     builder.addCase(login.rejected, (state) => {
       state.isLoading = false;
+    });
+
+    // refreshAccessToken
+    // builder.addCase(refreshAccessToken.pending, (state) => {
+    //   state.isLoading = true;
+    // });
+    // builder.addCase(refreshAccessToken.fulfilled, (state, action) => {
+    //   state.isLoading = false;
+    //   const { adminId, accessToken } = action.payload;
+    //   state.adminId = adminId;
+    //   state.accessToken = accessToken;
+    //   state.isLoggedIn = true;
+    // });
+    // builder.addCase(refreshAccessToken.rejected, (state) => {
+    //   state.isLoading = false;
+    // });
+
+    // logout
+    builder.addCase(logout.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(logout.fulfilled, (state) => {
+      state.adminId = "";
+      state.accessToken = "";
+      state.refreshToken = "";
+      state.isLoading = false;
+    });
+    builder.addCase(logout.rejected, (state) => {
+      state.isLoading = true;
     });
   },
 });
 
 export const authReducer = authSlice.reducer;
-export const { logout, restoreAuthState } = authSlice.actions;
+export const { refreshAccessToken, restoreAuthState } = authSlice.actions;

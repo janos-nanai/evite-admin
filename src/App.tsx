@@ -11,7 +11,10 @@ import EditGuest from "./pages/EditGuest";
 
 function App() {
   const dispatch = useDispatch();
-  const authState = useSelector((state: AppState) => state.auth);
+  const { accessToken, refreshToken } = useSelector(
+    (state: AppState) => state.auth
+  );
+  const isLoggedIn = !!(accessToken || refreshToken);
 
   useEffect(() => {
     let localAuthData;
@@ -19,27 +22,25 @@ function App() {
     if (localAuthDataRaw) {
       localAuthData = JSON.parse(localAuthDataRaw);
     }
-    if (localAuthData && localAuthData.isLoggedIn === true) {
-      console.log("auth restore");
-      console.log("localAuthData:", localAuthData);
-
+    if (localAuthData) {
       dispatch(restoreAuthState(localAuthData));
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    if (authState.isLoggedIn === true) {
-      console.log("saving auth to localstorage");
+  // useEffect(() => {
+  //   console.log("saving to local");
 
-      localStorage.setItem("localAuthData", JSON.stringify({ ...authState }));
-    }
-  }, [authState]);
+  //   localStorage.setItem(
+  //     "localAuthData",
+  //     JSON.stringify({ refreshToken: authState.refreshToken })
+  //   );
+  // }, [authState.refreshToken]);
 
   return (
     <Layout>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={authState.isLoggedIn && <Summary />} />
+          <Route path="/" element={isLoggedIn && <Summary />} />
           <Route path="/:voucherId" element={<EditGuest />} />
         </Routes>
       </BrowserRouter>

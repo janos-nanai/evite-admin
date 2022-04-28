@@ -5,8 +5,8 @@ export type AppState = ReturnType<typeof store.getState>;
 
 export interface AuthState {
   adminId: string;
-  isLoggedIn: boolean;
   accessToken: string;
+  refreshToken: string;
   isLoading: boolean;
 }
 
