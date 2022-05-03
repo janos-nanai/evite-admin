@@ -4,6 +4,9 @@ import React from "react";
 import { Button, Container, ListGroup } from "react-bootstrap";
 import { TrashFill as TrashIcon } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
+import GlutenFreeBadge from "../Badges/GlutenFreeBadge";
+import LactoseFreeBadge from "../Badges/LactoseFreeBadge";
+import DiabeticBadge from "../Badges/DiabeticBadge";
 
 import BasicEditCard from "./BasicEditCard";
 import { deletePartner } from "../../store/single-guest-slice";
@@ -47,6 +50,12 @@ const PartnerEditCard = () => {
           <ListGroup.Item>{`first name: ${firstName}`}</ListGroup.Item>
           <ListGroup.Item>{`last name: ${lastName}`}</ListGroup.Item>
           <ListGroup.Item>{`nickname: ${nickName}`}</ListGroup.Item>
+          <ListGroup.Item>
+            {"special diet:"}
+            {foodGlutenFree && <GlutenFreeBadge />}
+            {foodLactoseFree && <LactoseFreeBadge />}
+            {foodDiabetic && <DiabeticBadge />}
+          </ListGroup.Item>
         </ListGroup>
         <Container className="d-flex justify-content-between mt-2">
           <Button onClick={updateHandler}>UPDATE</Button>

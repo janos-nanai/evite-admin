@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import BasicEditCard from "./BasicEditCard";
 import { deleteGuest } from "../../store/guests-slice";
 import { openUpdateGuestModal } from "../../store/ui-slice";
+import GlutenFreeBadge from "../Badges/GlutenFreeBadge";
+import LactoseFreeBadge from "../Badges/LactoseFreeBadge";
+import DiabeticBadge from "../Badges/DiabeticBadge";
 
 const GuestEditCard = () => {
   const dispatch = useDispatch();
@@ -48,6 +51,12 @@ const GuestEditCard = () => {
         <ListGroup.Item>{`phone: ${phone}`}</ListGroup.Item>
         <ListGroup.Item>{`coming: ${isComing}`}</ListGroup.Item>
         <ListGroup.Item>{`reply: ${didReply}`}</ListGroup.Item>
+        <ListGroup.Item>
+          {"special diet:"}
+          {foodGlutenFree && <GlutenFreeBadge />}
+          {foodLactoseFree && <LactoseFreeBadge />}
+          {foodDiabetic && <DiabeticBadge />}
+        </ListGroup.Item>
       </ListGroup>
       <Container className="d-flex justify-content-between mt-2">
         <Button onClick={updateHandler}>UPDATE</Button>

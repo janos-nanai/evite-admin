@@ -6,6 +6,9 @@ import { useDispatch } from "react-redux";
 
 import { deleteChild } from "../../store/single-guest-slice";
 import { openUpdateChildModal, setCurrentChildId } from "../../store/ui-slice";
+import GlutenFreeBadge from "../Badges/GlutenFreeBadge";
+import LactoseFreeBadge from "../Badges/LactoseFreeBadge";
+import DiabeticBadge from "../Badges/DiabeticBadge";
 
 const ChildListItem = (props: ChildData) => {
   const dispatch = useDispatch();
@@ -40,6 +43,12 @@ const ChildListItem = (props: ChildData) => {
           <ListGroup.Item>{`last name: ${lastName}`}</ListGroup.Item>
           <ListGroup.Item>{`nickname: ${nickName}`}</ListGroup.Item>
           <ListGroup.Item>{`age: ${age}`}</ListGroup.Item>
+          <ListGroup.Item>
+            {"special diet:"}
+            {foodGlutenFree && <GlutenFreeBadge />}
+            {foodLactoseFree && <LactoseFreeBadge />}
+            {foodDiabetic && <DiabeticBadge />}
+          </ListGroup.Item>
         </ListGroup>
       </Card.Body>
       <Card.Footer>

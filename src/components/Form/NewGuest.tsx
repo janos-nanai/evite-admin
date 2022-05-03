@@ -1,14 +1,16 @@
 import { GuestDataInit } from "../../types/guest-types";
 import { AppState } from "../../types/store-types";
 
+import { customAlphabet } from "nanoid";
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Clipboard as ClipBoardIcon } from "react-bootstrap-icons";
 
 import { createGuest } from "../../store/guests-slice";
 import { closeNewGuestModal } from "../../store/ui-slice";
 import BasicFormModal from "./BasicFormModal";
 import BasicFormInput from "./BasicFormInput";
-import { Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 
 const NewGuest = () => {
   const [voucherIdInput, setVoucherIdInput] = useState("");
@@ -67,6 +69,19 @@ const NewGuest = () => {
     setNickNameInput(event.target.value.trim());
   };
 
+  const generateHandler = () => {
+    const idGen = customAlphabet("abcdefghijklmnopqrstuvwxyz1234567890", 6);
+    const passGen = customAlphabet("abcdefghijklmnopqrstuvwxyz1234567890", 12);
+    setVoucherIdInput(idGen());
+    setVoucherPassInput(passGen());
+  };
+
+  const clipboardCopyHandler = async () => {
+    await navigator.clipboard.writeText(
+      `${voucherIdInput} - ${voucherPassInput}`
+    );
+  };
+
   return (
     <BasicFormModal
       title="CREATE GUEST PROFILE"
@@ -92,6 +107,15 @@ const NewGuest = () => {
             changeHandler={voucherPassInputHandler}
             value={voucherPassInput}
           />
+        </Container>
+        <Container
+          className="d-flex flex-column gap-1"
+          style={{ width: "25%" }}
+        >
+          <Button onClick={generateHandler}>GEN</Button>
+          <Button onClick={clipboardCopyHandler}>
+            <ClipBoardIcon />
+          </Button>
         </Container>
       </Container>
       <BasicFormInput
