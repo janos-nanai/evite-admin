@@ -41,7 +41,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={isLoggedIn && <Summary />} />
-          <Route path="/:voucherId" element={<EditGuest />} />
+          <Route path="/:id" element={<EditGuest />} />
         </Routes>
       </BrowserRouter>
     </Layout>
