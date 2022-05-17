@@ -66,9 +66,9 @@ const UpdateChild = () => {
     event.preventDefault();
 
     const updatedChildData: ChildData = {
-      firstName: firstNameInput,
-      lastName: lastNameInput,
-      nickName: nickNameInput,
+      firstName: firstNameInput.trim(),
+      lastName: lastNameInput.trim(),
+      nickName: nickNameInput.trim(),
       age: ageInput,
       foodGlutenFree: foodGlutenFreeInput,
       foodLactoseFree: foodLactoseFreeInput,
@@ -90,15 +90,15 @@ const UpdateChild = () => {
   };
 
   const firstNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setFirstNameInput(event.target.value.trim());
+    setFirstNameInput(event.target.value);
   };
 
   const lastNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setLastNameInput(event.target.value.trim());
+    setLastNameInput(event.target.value);
   };
 
   const nickNameInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setNickNameInput(event.target.value.trim());
+    setNickNameInput(event.target.value);
   };
 
   const ageInputHandler = (event: ChangeEvent<HTMLInputElement>) => {

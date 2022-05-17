@@ -26,9 +26,9 @@ const NewPartner = () => {
     event.preventDefault();
 
     const newPartnerData: PartnerData = {
-      firstName: firstNameInput,
-      lastName: lastNameInput,
-      nickName: nickNameInput,
+      firstName: firstNameInput.trim(),
+      lastName: lastNameInput.trim(),
+      nickName: nickNameInput.trim(),
       foodGlutenFree: foodGlutenFreeInput,
       foodLactoseFree: foodLactoseFreeInput,
       foodDiabetic: foodDiabeticInput,
